@@ -1,4 +1,4 @@
-# apan_flask_apps
+# Term Project Implementation - Group 6
 This is a Term Project Implementation of Group 6 for APAN 5400 Managing Data. 
 
 The topic of the project is Search Engine for New York City Restaurant Inspection.
