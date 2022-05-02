@@ -1,0 +1,79 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+    New York City Restaurant Inspection
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 style="text-align:center;font-family:verdana;font-size:300%;color:rgb(197, 155, 63);"><b>New York City Restaurant Inspection</b></h1>
+        <p style="text-align:center;font-family:verdana;font-size:180%;color:rgb(197, 155, 63);">Hello, diners!</p>
+        <div class="row">
+            <div class="col-md-8">
+                <p></p>
+                <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+                <p style="text-align:left;font-family:verdana;font-size:130%;color:rgb(218, 182, 92);"><b>Are you concerned about food safety?</b></p>
+                <p style="text-align:left;font-family:verdana;font-size:105%;color:rgb(89, 95, 96);">We are here to help you with the trusted restaurant inspection information from NYC Open Data!</p>
+                <p style="text-align:left;font-family:verdana;font-size:105%;color:rgb(89, 95, 96);">Please enter the restaurant name and select inspection dates to start searching!</p>
+                <p style="text-align:left;font-family:verdana;font-size:90%;color:rgb(118, 125, 126);"><i>*The restaurant name field is case-insensitive and supports partial matching.</i></p>
+                <p style="font-family:verdana;"><b>Dataset Last Updated on: {{ last_update_date }}</b></p>
+                <a href="{{ url_for('analysis') }}" style="font-family:verdana;color:rgb(79, 107, 222)"><b>Click here to view the NYC Restaurant Inspection Analysis</b></a>
+                <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+                <img src="{{url_for('static', filename='nyc restaurant.jpg')}}" style="width:750px;height:450px;">
+                <p style="text-align:right;font-family:verdana;font-size:90%;color:rgb(118, 125, 126);"><i>Source: Architectural Digest</i></p>
+            </div>
+            <div class="col-md-4" style="background-color:rgb(239, 236, 222);border:8px solid rgb(239, 236, 222);">
+                {{ wtf.quick_form(form) }}
+                <p></p>
+                <a href="{{ url_for('home') }}" style="font-family:verdana;color:rgb(218, 182, 92)"><b>Clear Results</b></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr/>
+                {% if search_results %}
+                        <h3 style="text-align:center;font-family:verdana;color:rgb(218, 182, 92);background-color:rgb(239, 236, 222);line-height:40px;"><b>Search Results</b></h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p style="font-family:verdana;"><b>{{ search_count }} inspection result(s).</b></p>
+                            </div>
+                            <div class="col-md-8">
+                                <p style="text-align:right;font-family:verdana;font-size:90%;color:rgb(118, 125, 126);"><i>*Inspection date: 1/1/1900 means an establishment has not yet had an inspection.</i></p>
+                            </div>
+                        </div>
+                        <table id="data" class="table table-striped">
+                            <tr>
+                                <th style="text-align: center;">Restaurant Name</th>
+                                <th style="text-align: center;">Borough</th>
+                                <th style="text-align: center;">Building</th>
+                                <th style="text-align: center;">Street</th>
+                                <th style="text-align: center;">Zipcode</th>
+                                <th style="text-align: center;">Phone</th>
+                                <th style="text-align: center;">Cuisine Type</th>
+                                <th style="text-align: center;">Inspection Date</th>
+                                <th style="text-align: center;">Violation Description</th>
+                                <th style="text-align: center;">Critical Flag</th>
+                            </tr>
+                            {% for i in search_results %}
+                                <tr>
+                                    <td>{{i.dba}}</td>
+                                    <td>{{i.boro}}</td>
+                                    <td>{{i.building}}</td>
+                                    <td>{{i.street}}</td>
+                                    <td>{{i.zipcode}}</td>
+                                    <td>{{i.phone}}</td>
+                                    <td>{{i.cuisine_description}}</td>
+                                    <td>{{i.inspection_date}}</td>
+                                    <td>{{i.violation_description}}</td>
+                                    <td>{{i.critical_flag}}</td>
+                            </tr>
+                        {% endfor %}
+                     </table>
+                {% else %}
+                    <p style="font-family:verdana;">No results found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

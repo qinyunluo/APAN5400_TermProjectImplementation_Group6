@@ -1,0 +1,164 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+    Analysis 
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+      <h1 style="text-align:center;font-family:verdana;font-size:200%;color:rgb(79, 107, 222);"><b>NYC Restaurant Inspection Analysis</b> </h1>
+      <a href="{{ url_for('home') }}" style="text-align:center;font-family:verdana;color:rgb(218, 182, 92)"><b><< Back to Search Page</b></a>
+        <div class="row">
+            <div class="col-md-6">
+              <p></p>
+              <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+              <p style="text-align:center;font-family:verdana;font-size:125%;color:rgb(79, 107, 222);background-color:rgb(219, 229, 236);"><b>Restaurant Summary</b></p>
+              <p style="text-align:left;font-family:verdana;"><b>Total number of restaurants: {{restaurant_count}}</b></p>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+              <canvas id="restaurant_boro_chart" height="400" style="width:100%;max-width:600px"></canvas>
+              <script>
+                var xValues = {{ r_boros | safe }};
+                var yValues = {{ r_boros_values | safe }};
+                var barColors = ["salmon", "gold","mediumseagreen","cornflowerblue","mediumpurple"];
+                new Chart("restaurant_boro_chart", {
+                  type: "pie",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues
+                    }]
+                  },
+                  options: {
+                    legend: {display: true},
+                    title: {
+                      display: true,
+                      text: "Number of Restaurants by Borough",
+                      fontSize: 16
+                    }
+                  }
+                });
+              </script>
+              <p></p>
+              <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+              <p style="text-align:left;font-family:verdana;"><b>Top 10 cuisines:</b></p>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+              <canvas id="restaurant_cuisine_chart" height="600" style="width:100%;max-width:600px;"></canvas>
+              <script>
+                var xValues2 = {{ r_cuisine | safe }};
+                var yValues2 = {{ r_cuisine_values | safe }};
+                var barColors2 = ["salmon","lightcoral","orange","gold","seagreen","mediumseagreen","royalblue","cornflowerblue","mediumslateblue","mediumpurple"];
+                new Chart("restaurant_cuisine_chart", {
+                  type: "horizontalBar",
+                  data: {
+                    labels: xValues2,
+                    datasets: [{
+                      backgroundColor: barColors2,
+                      data: yValues2
+                    }]
+                  },
+                  options: {
+                    legend: {display: false},
+                    title: {
+                      display: true,
+                      text: "Number of Restaurants by Cuisine Type",
+                      fontSize: 16
+                    },
+                  }
+                });
+              </script>
+            </div>
+            <div class="col-md-6">
+              <p></p>
+              <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+              <p style="text-align:center;font-family:verdana;font-size:125%;color:rgb(79, 107, 222);background-color:rgb(219, 229, 236);"><b>Inspection Summary</b></p>
+              <p style="text-align:left;font-family:verdana;"><b>Total number of inspections: {{inspection_count}}</b></p>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+              <canvas id="inspection_year_chart" height="300" style="width:100%;max-width:600px"></canvas>
+              <script>
+                var xValues3 = {{ i_year | safe }};
+                var yValues3 = {{ i_year_values | safe }};
+                new Chart("inspection_year_chart", {
+                  type: "line",
+                  data: {
+                    labels: xValues3,
+                    datasets: [{
+                      fill: false,
+                      pointRadius: 3,
+                      borderColor: "cornflowerblue",
+                      data: yValues3
+                    }]
+                  },
+                  options: {
+                    legend: {display: false},
+                    title: {
+                      display: true,
+                      text: "Number of Inspections by Year",
+                      fontSize: 16
+                    }
+                  }
+                });
+              </script>
+              <p style="text-align:left;font-family:verdana;font-size:90%;"><i>* Year 1900 means an establishment has not yet had an inspection.</i></p>
+              <p></p>
+              <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+              <p style="text-align:left;font-family:verdana;"><b>Critical types:</b></p>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+              <canvas id="inspection_critical_chart" height="300" style="width:100%;max-width:600px"></canvas>
+              <script>
+                var xValues4 = {{ i_critical | safe }};
+                var yValues4 = {{ i_critical_values | safe }};
+                var barColors4 = ["salmon", "gold","mediumseagreen","cornflowerblue","mediumpurple"];
+                new Chart("inspection_critical_chart", {
+                  type: "pie",
+                  data: {
+                    labels: xValues4,
+                    datasets: [{
+                      backgroundColor: barColors4,
+                      data: yValues4
+                    }]
+                  },
+                  options: {
+                    legend: {display: true},
+                    title: {
+                      display: true,
+                      text: "Number of Inspections by Critical Type",
+                      fontSize: 16
+                    }
+                  }
+                });
+              </script>
+              <p></p>
+              <td color="#FFFFFF" style="line-height:10px;" colspan=3>&nbsp;</td>
+              <p style="text-align:left;font-family:verdana;"><b>Average inspection score: {{inspection_avg}}</b></p>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+              <canvas id="inspection_boro_chart" height="300" style="width:100%;max-width:600px"></canvas>
+              <script>
+                var xValues5 = {{ i_boros | safe }};
+                var yValues5 = {{ i_boros_values | safe }};
+                var barColors5 = ["mediumpurple","cornflowerblue","salmon","mediumseagreen","gold"];
+                new Chart("inspection_boro_chart", {
+                  type: "bar",
+                  data: {
+                    labels: xValues5,
+                    datasets: [{
+                      backgroundColor: barColors5,
+                      data: yValues5
+                    }]
+                  },
+                  options: {
+                    legend: {display: false},
+                    title: {
+                      display: true,
+                      text: "Average Inspection Score by Borough",
+                      fontSize: 16
+                    }
+                  }
+                });
+              </script>
+              <p style="text-align:left;font-family:verdana;font-size:90%;"><i>* The lower score means a better inspection result.</i></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
