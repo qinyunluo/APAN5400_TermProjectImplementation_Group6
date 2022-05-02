@@ -1,6 +1,6 @@
 """Module to handle the routes.
 
-Author: Nick Machairas, 2022
+Author: Qinyun Luo, 2022
 """
 
 from cmath import nan
